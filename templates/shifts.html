@@ -1,0 +1,35 @@
+{% extends 'index.html' %}
+{% block content %}
+    <br><br><br><br>
+<div class="main-center" style="font-size: 200%">
+    Shifts for lines
+</div>
+<div class="main-center" style="margin-top: 50px">
+    <table class="table">
+        <tr>
+            <th>#</th>
+            <th>Line</th>
+            <th>Line running time (day - day period)</th>
+            <th></th>
+            <th></th>
+        </tr>
+        {% for line in lines %}
+        <tr class="{% cycle 'table-light' 'table-dark' %}">
+            <td>{{ forloop.counter }}</td>
+            <td>{{ line.name }}</td>
+            <td>
+            {% for shift in shift_line %}
+            {% if shift.line.name == line.name %}
+            {{ shift.shift_time.day }} - {{ shift.shift_time.daytime }}<br>
+            {% endif %}
+            {% endfor %}
+            </td>
+            <td><a class="btn btn-info" href="/line/shifts/{{ line.id }}">Details</a></td>
+        {% if user.is_superuser %}
+            <td><a class="btn btn-info" href="/shifts/{{ line.id }}/{{ current_date|date:"Y-m-d"}}">Set Shift</a></td>
+        {% endif %}
+        </tr>
+        {% endfor %}
+    </table>
+</div>
+{% endblock %}

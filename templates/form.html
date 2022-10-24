@@ -1,0 +1,22 @@
+{% extends 'index.html' %}
+{% block content %}
+    <div class="main-center">
+    {{ message }}
+    </div>
+    {% if user.is_authenticated %}
+        <div class="main-center" style="font-size: 150%; margin-top: 100px">
+        {{ header }}
+        </div>
+        <div class="main-center" style="margin-top: 20px">
+            <div class="card w-25">
+                <div class="card-body">
+                    <form method="post" class="form">
+                        {% csrf_token %}
+                        {{ form.as_p }}
+                        <input type="submit" value="Submit">
+                    </form>
+                </div>
+            </div>
+        </div>
+    {% endif %}
+{% endblock %}

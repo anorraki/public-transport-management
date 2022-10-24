@@ -1,0 +1,86 @@
+{% extends 'index.html' %}
+{% block content %}
+    <br><br><br><br>
+    <div class="main-center" style="font-size: 150%">
+        <strong>Line {{ line.name }}</strong>
+    </div>
+    <div class="main-center" style="font-size: 150%; margin-top: 0px">
+        Shifts on {{ shift_date|date:'d-m-Y' }}
+    </div>
+    <div>
+        Total shifts on this line to be set this day:<br>
+        <strong>
+            {% if shifts_on_line.count == 0 %}
+                No shifts
+            {% else %}
+                {% for shift in shifts_on_line %}
+                    {{ shift.shift_time.day }}-{{ shift.shift_time.daytime }}:
+                    {{ shift.number_of_shifts }}<br>
+                {% endfor %}
+            {% endif %}
+        </strong>
+    </div>
+    <div class="main-center" style="font-size: 100%; margin-top: 0px">
+        <table>
+            <form method="post">
+                {% csrf_token %}
+                <tr>
+                    <td>
+                        <label for="line_id">Change shifts to line</label>
+                    </td>
+                    <td>
+                        <select id="line_id" name="line_id">
+                            {% for line in all_lines %}
+                                <option value="{{ line.pk }}">{{ line.name }}</option>
+                            {% endfor %}
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label for="shift_date">Date</label>
+                    </td>
+                    <td>
+                        <input type="date" id="shift_date" name="shift_date" value="{{ shift_date|date:'d.m.Y' }}">
+                    </td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td>
+                        <input type="submit" id="show" name="show" value="Show">
+                    </td>
+                </tr>
+            </form>
+        </table>
+    </div>
+    <div class="main-center" style="margin-top: 50px">
+        <table class="table">
+            <tr>
+                <th><a class="btn btn-info" href="/add-shift/{{ line.pk }}/{{ shift_date|date:'Y-m-d' }}">Add Shift</a></th>
+                <th>Shift number</th>
+                <th>Running time (daytime)</th>
+                <th>Start</th>
+                <th>Finish</th>
+                <th>Vehicle</th>
+                <th>Driver ID</th>
+                <th></th>
+                <th></th>
+            </tr>
+            {% for shift in shifts %}
+                <tr class="{% cycle 'table-light' 'table-dark' %}">
+                    <td>{{ forloop.counter }}</td>
+                    <td>{{ shift.shift_number }}</td>
+                    <td>{{ shift.shift_on_line.shift_time.day }}-
+                        {{ shift.shift_on_line.shift_time.daytime }}
+                    </td>
+                    <td>{{ shift.start_time|time:"H:i" }}</td>
+                    <td>{{ shift.end_time|time:"H:i" }}</td>
+                    <td>{{ shift.vehicle }}</td>
+                    <td>{{ shift.driver }}</td>
+                    <td><a class="btn btn-info" href="/shifts/{{ shift.pk }}/edit">Edit</a></td>
+                    <td><a class="btn btn-info" href="/shifts/{{ shift.pk }}/delete">Delete</a></td>
+                </tr>
+            {% endfor %}
+        </table>
+    </div>
+{% endblock %}

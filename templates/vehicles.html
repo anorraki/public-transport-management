@@ -1,0 +1,44 @@
+{% extends 'index.html' %}
+{% block content %}
+    <br><br><br><br>
+<div class="main-center" style="font-size: 200%">
+    Vehicles<br>
+</div>
+    {% if user.is_superuser %}
+        <div class="main-center" style="margin-top: 20px; font-size: 200%">
+            <a class="btn btn-info" href="{% url 'add_vehicle' %}">Add Vehicle</a>
+        </div>
+    {% endif %}
+<div class="main-center" style="margin-top: 50px">
+    <table class="table">
+        <tr>
+            <th>#</th>
+            <th>Side number</th>
+            <th>Model</th>
+            <th>Type of vehicle</th>
+            {% if user.is_superuser %}
+            <th>Plate</th>
+            <th>Last review</th>
+            <th>Next review</th>
+            <th></th>
+            <th></th>
+            {% endif %}
+        </tr>
+        {% for vehicle in vehicles %}
+        <tr class="{% cycle 'table-light' 'table-dark' %}">
+            <td>{{ forloop.counter }}</td>
+            <td>{{ vehicle.side_number }}</td>
+            <td>{{ vehicle.model.name }}</td>
+            <td>{{ vehicle.model.type.name }} {{ vehicle.model.type.engine }}</td>
+            {% if user.is_superuser %}
+            <td>{{ vehicle.plate }}</td>
+            <td>{{ vehicle.last_review|date:'Y-m-d' }}</td>
+            <td>{{ vehicle.next_review|date:'Y-m-d' }}</td>
+            <td><a class="btn btn-info" href="/vehicle/{{ vehicle.pk}}/edit/">Edit</a></td>
+            <td><a class="btn btn-info" href="/vehicle/{{ vehicle.pk}}/delete/">Delete</a></td>
+            {% endif %}
+        </tr>
+        {% endfor %}
+    </table>
+</div>
+{% endblock %}

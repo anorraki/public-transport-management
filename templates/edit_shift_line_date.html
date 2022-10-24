@@ -1,0 +1,91 @@
+{% extends 'index.html' %}
+{% block content %}
+    <br><br><br><br>
+    <div class="main-center" style="font-size: 200%">
+        Add shift
+    </div>
+    <div class="main-center" style="margin-top: 50px">
+        <table class="table">
+            <form method="post">
+            {% csrf_token %}
+                <tr>
+                    <td><label for="line_name"></label>Line</td>
+                    <td>
+                        <input type="text" id="line_name" value="{{ line.name }}" readonly>
+                        <input type="hidden" id="line_id" name="line_id" value="{{ line.pk }}">
+                    </td>
+                </tr>
+                <tr>
+                    <td><label for="shift_date"></label>Date</td>
+                    <td>
+                        <input type="date" id="shift_date" value="{{ shift_date|date:'Y-m-d' }}" readonly>
+                    </td>
+                </tr>
+                <tr>
+                    <td><label for="shift_day"></label>Shift day</td>
+                    <td>
+                        <input type="text" id="shift_day" name="shift_day" value="{{ shift_day }}" readonly>
+                    </td>
+                </tr>
+                <tr>
+                    <td><label for="shift_daytime"></label>Shift daytime</td>
+                    <td>
+                        <select id="shift_daytime" name="shift_daytime">
+                            {% for shift in shifts_on_line %}
+                                <option value="{{ shift.shift_time.daytime }}">{{ shift.shift_time.daytime }}</option>
+                            {% endfor %}
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td><label for="shift_number"></label>Shift number</td>
+                    <td>
+                        <input type="number" id="shift_number" name="shift_number">
+                    </td>
+                </tr>
+                <tr>
+                    <td><label for="start_time"></label>Start time</td>
+                    <td>
+                        <input type="time" id="start_time" name="start_time">
+                    </td>
+                </tr>
+                <tr>
+                    <td><label for="end_time"></label>End time</td>
+                    <td>
+                        <input type="time" id="end_time" name="end_time">
+                    </td>
+                </tr>
+                <tr>
+                    <td><label for="vehicle_id"></label>Vehicle</td>
+                    <td>
+                        <select id="vehicle_id" name="vehicle_id">
+                            <option value=""></option>
+                            {% for vehicle in vehicles %}
+                                <option value="{{ vehicle.pk }}">{{ vehicle.side_number }} |
+                                    {{ vehicle.model.name }} | {{ vehicle.model.type }}</option>
+                            {% endfor %}
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td><label for="driver_id"></label>Driver</td>
+                    <td>
+                        <select id="driver_id" name="driver_id">
+                            <option value=""></option>
+                            {% for driver in drivers %}
+                                <option value="{{ driver.pk }}">ID: {{ driver.pk }} | Name:
+                                {{ driver.employee.user.last_name }}
+                            {% endfor %}
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td>
+                        <input type="submit" value="Set shift">
+                    </td>
+                </tr>
+            </form>
+        </table>
+    </div>
+{% endblock %}

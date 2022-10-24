@@ -1,0 +1,37 @@
+{% extends 'index.html' %}
+{% block content %}
+    <br><br><br><br>
+<div class="main-center" style="font-size: 200%">
+    Shifts for&nbsp;
+    <strong>line {{ line.name }}</strong>
+</div>
+    {% if user.is_superuser %}
+        <div class="main-center" style="margin-top: 20px; font-size: 200%">
+            <a class="btn btn-info" href="/line/shifts/{{ line.pk }}/add-shift">Add Shift</a>
+        </div>
+    {% endif %}
+<div class="main-center" style="margin-top: 50px">
+    <table class="table">
+        <tr>
+            <th>Type of day</th>
+            <th>Shift daytime</th>
+            <th>Number of shifts</th>
+            {% if user.is_superuser %}
+            <th></th>
+            <th></th>
+            {% endif %}
+        </tr>
+        {% for shift in shift_on_line %}
+        <tr class="table-light">
+            <td>{{ shift.shift_time.day }}</td>
+            <td>{{ shift.shift_time.daytime }}</td>
+            <td>{{ shift.number_of_shifts }}</td>
+            {% if user.is_superuser %}
+            <td><a class="btn btn-info" href="/line/shifts/{{ line.pk }}/{{ shift.pk }}/edit">Edit</a></td>
+            <td><a class="btn btn-info" href="/line/shifts/{{ line.pk }}/{{ shift.pk }}/delete">Delete</a></td>
+            {% endif %}
+        </tr>
+        {% endfor %}
+    </table>
+</div>
+{% endblock %}

@@ -1,0 +1,44 @@
+{% extends 'index.html' %}
+{% block content %}
+    <br><br><br><br>
+    <div class="main-center" style="font-size: 200%">
+        Add shift for&nbsp;
+        <strong>Line {{ line.name }}</strong>
+    </div>
+    <div class="main-center" style="margin-top: 50px">
+        <table class="table">
+            <form method="post">
+            {% csrf_token %}
+                <tr>
+                    <td><label for="line_name"></label>Line</td>
+                    <td>
+                        <input type="text" id="line_name" value="{{ line.name }}" readonly>
+                        <input type="hidden" id="line_id" name="line_id" value="{{ line.pk }}">
+                    </td>
+                </tr>
+                <tr>
+                    <td><label for="shift_time"></label>Shift time</td>
+                    <td>
+                       <select id="shift_time" name="shift_time">
+                            {% for time in shift_time %}
+                                <option value="{{ time.pk }}">{{ time }}</option>
+                            {% endfor %}
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td><label for="number_of_shifts"></label>Number of shifts</td>
+                    <td>
+                        <input type="number" id="number_of_shifts" name="number_of_shifts">
+                    </td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td>
+                        <input type="submit" value="Add shift">
+                    </td>
+                </tr>
+            </form>
+        </table>
+    </div>
+{% endblock %}

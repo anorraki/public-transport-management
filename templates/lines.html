@@ -1,0 +1,46 @@
+{% extends 'index.html' %}
+{% block content %}
+    <br><br><br><br>
+<div class="main-center" style="font-size: 200%">
+    Lines
+</div>
+    {% if user.is_superuser %}
+        <div class="main-center" style="margin-top: 20px">
+            <a class="btn btn-info" href="{% url 'add_line' %}">Add Line</a>
+        </div>
+    {% endif %}
+<div class="main-center" style="margin-top: 50px">
+    <table class="table">
+        <tr>
+            <th>#</th>
+            <th>Line</th>
+            <th>Distance (km)</th>
+            <th>Type of vehicle</th>
+            <th>From</th>
+            <th>To</th>
+            {% if user.is_superuser %}
+            <th></th>
+            <th></th>
+            {% endif %}
+        </tr>
+        {% for line in lines %}
+        <tr class="{% cycle 'table-light' 'table-dark' %}">
+            <td>{{ forloop.counter }}</td>
+            <td>{{ line.name }}</td>
+            <td>{{ line.distance }}</td>
+            <td>
+            {% for type in line.vehicle_type.all %}
+            <li>{{ type }}</li>
+            {% endfor %}
+            </td>
+            <td>{{ line.first_stop }}</td>
+            <td>{{ line.last_stop }}</td>
+            {% if user.is_superuser %}
+            <td><a class="btn btn-info" href="/line/{{ line.pk }}/edit/">Edit</a></td>
+            <td><a class="btn btn-info" href="/line/{{ line.pk }}/delete/">Delete</a></td>
+            {% endif %}
+        </tr>
+        {% endfor %}
+    </table>
+</div>
+{% endblock %}

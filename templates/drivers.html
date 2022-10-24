@@ -1,0 +1,36 @@
+{% extends 'index.html' %}
+{% block content %}
+    <br><br><br><br>
+<div class="main-center" style="font-size: 200%">
+    Drivers
+</div>
+<div class="main-center" style="margin-top: 20px">
+    <a class="btn btn-info" href="{% url 'add_driver' %}">Add Driver</a>
+</div>
+<div class="main-center" style="margin-top: 50px">
+    <table class="table">
+        <tr>
+            <th>#</th>
+            <th>ID</th>
+            <th>First name</th>
+            <th>Last name</th>
+            <th>License validity</th>
+            <th>Vehicle assigned</th>
+            <th></th>
+            <th></th>
+        </tr>
+        {% for driver in drivers %}
+        <tr class="{% cycle 'table-light' 'table-dark' %}">
+            <td>{{ forloop.counter }}</td>
+            <td>{{ driver.employee.user.pk }}</td>
+            <td>{{ driver.employee.user.first_name }}</td>
+            <td>{{ driver.employee.user.last_name }}</td>
+            <td>{{ driver.license_validity|date:'Y-m-d' }}</td>
+            <td>{{ driver.vehicle_assigned.side_number }}</td>
+            <td><a class="btn btn-info" href="/driver/{{ driver.pk }}/edit/">Edit</a></td>
+            <td><a class="btn btn-info" href="/driver/{{ driver.pk }}/delete/">Delete</a></td>
+        </tr>
+        {% endfor %}
+    </table>
+</div>
+{% endblock %}
